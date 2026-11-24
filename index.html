@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#54258b">
+<title>PiLoop</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f8f6fc;color:#241936}
+header{background:linear-gradient(120deg,#39205e,#7540a0);color:white;padding:22px}
+nav{max-width:900px;margin:auto;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:27px;font-weight:bold;color:#f6c85c}
+select,button,input{font:inherit;border-radius:10px;padding:12px}
+select,input{border:1px solid #ddd;background:white}
+.hero{text-align:center;padding:40px 18px}
+.hero h1{color:#54258b;font-size:34px}
+.hero p{line-height:1.9;color:#71647e}
+.search{width:90%;max-width:500px;margin:15px}
+.btn{background:#633493;color:white;border:0;cursor:pointer}
+.grid{max-width:900px;margin:20px auto;padding:15px;display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.card{background:white;padding:20px;border-radius:16px;box-shadow:0 4px 18px #38205e12}
+.card h3{color:#593080}
+.card p{color:#756c80;font-size:14px;line-height:1.7}
+.emoji{font-size:32px}
+.action{margin:25px 15px;padding:25px;background:#eee5f7;border-radius:17px;text-align:center}
+footer{text-align:center;padding:25px;color:#81758c}
+@media(min-width:650px){.grid{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<header>
+<nav>
+<div class="logo">π PiLoop</div>
+<select onchange="changeLang(this.value)">
+<option value="en">English</option>
+<option value="fa">فارسی</option>
+<option value="ku">کوردی</option>
+</select>
+</nav>
+</header>
+
+<section class="hero">
+<h1 id="title">Connect. Trade. Grow.</h1>
+<p id="subtitle">A global community connecting people, businesses and services through the Pi ecosystem.</p>
+<input class="search" id="search" placeholder="Search products and services...">
+<br>
+<button class="btn" id="searchBtn" onclick="searchItems()">Explore PiLoop</button>
+</section>
+
+<section class="grid">
+<div class="card"><div class="emoji">🛠️</div><h3 data-en="Services" data-fa="خدمات" data-ku="خزمەتگوزاری">Services</h3><p data-en="Find trusted service providers." data-fa="ارائه‌دهندگان خدمات را پیدا کنید." data-ku="خزمەتگوزارەکان بدۆزەرەوە.">Find trusted service providers.</p></div>
+<div class="card"><div class="emoji">📦</div><h3 data-en="Products" data-fa="محصولات" data-ku="بەرهەمەکان">Products</h3><p data-en="Discover products from businesses." data-fa="محصولات کسب‌وکارها را کشف کنید." data-ku="بەرهەمەکانی بازرگانان ببینە.">Discover products from businesses.</p></div>
+<div class="card"><div class="emoji">💻</div><h3 data-en="Digital Work" data-fa="خدمات دیجیتال" data-ku="کاری دیجیتاڵ">Digital Work</h3><p data-en="Connect with digital professionals." data-fa="با متخصصان دیجیتال ارتباط بگیرید." data-ku="پەیوەندی بە پسپۆڕانی دیجیتاڵەوە بکە.">Connect with digital professionals.</p></div>
+<div class="card"><div class="emoji">🤝</div><h3 data-en="Community" data-fa="جامعه" data-ku="کۆمەڵگا">Community</h3><p data-en="Meet people around the world." data-fa="با افراد سراسر جهان آشنا شوید." data-ku="لەگەڵ خەڵکی جیهان ئاشنا ببە.">Meet people around the world.</p></div>
+</section>
+
+<section class="action">
+<h2 id="requestTitle">Have a need? Create a request.</h2>
+<p id="requestText">Connect with people who can help you.</p>
+<button class="btn" onclick="alert('Coming soon!')">+ <span id="requestBtn">Create Request</span></button>
+</section>
+<footer>PiLoop © 2026 · Built for the Pi ecosystem</footer>
+
+<script>
+const translations={
+en:{title:"Connect. Trade. Grow.",subtitle:"A global community connecting people, businesses and services through the Pi ecosystem.",search:"Search products and services...",searchBtn:"Explore PiLoop",requestTitle:"Have a need? Create a request.",requestText:"Connect with people who can help you.",requestBtn:"Create Request"},
+fa:{title:"ارتباط بگیر، معامله کن، رشد کن",subtitle:"جامعه‌ای جهانی برای ارتباط مردم، کسب‌وکارها و خدمات در اکوسیستم Pi.",search:"جستجوی محصولات و خدمات...",searchBtn:"کاوش در PiLoop",requestTitle:"نیازی داری؟ درخواست ثبت کن.",requestText:"با کسانی که می‌توانند کمکت کنند ارتباط بگیر.",requestBtn:"ثبت درخواست"},
+ku:{title:"پەیوەندی بکە، مامەڵە بکە، گەشە بکە",subtitle:"کۆمەڵگایەکی جیهانی بۆ پەیوەندی نێوان خەڵک و بازرگانی و خزمەتگوزاری.",search:"گەڕان بۆ بەرهەم و خزمەتگوزاری...",searchBtn:"گەڕان لە PiLoop",requestTitle:"پێویستیت هەیە؟ داواکاری تۆمار بکە.",requestText:"پەیوەندی بەو کەسانەوە بکە کە یارمەتیت دەدەن.",requestBtn:"تۆمارکردنی داواکاری"}
+};
+function changeLang(lang){
+const t=translations[lang];
+for(const id of ["title","subtitle","searchBtn","requestTitle","requestText","requestBtn"])
+document.getElementById(id).textContent=t[id];
+document.getElementById("search").placeholder=t.search;
+document.documentElement.lang=lang;
+document.documentElement.dir=lang==="en"?"ltr":"rtl";
+document.querySelectorAll("[data-"+lang+"]").forEach(el=>el.textContent=el.getAttribute("data-"+lang));
+}
+function searchItems(){
+const q=document.getElementById("search").value.trim();
+alert(q?"Search will be connected in a future version.":"Please enter a search term.");
+}
+</script>
+</body>
+</html>
