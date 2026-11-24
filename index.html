@@ -1,331 +1,375 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#54258b">
-<title>PiLoop</title>
+<meta name="theme-color" content="#6d35c7">
+<title>PiLoop | Global Pi Community</title>
 <style>
+:root{--purple:#6d35c7;--purple2:#8c5be0;--gold:#d8ad55;--ink:#252039;--muted:#777287;--bg:#f7f5fc;--card:#fff;--line:#ece8f4}
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f8f6fc;color:#241936}
-header{background:linear-gradient(120deg,#39205e,#7540a0);color:white;padding:22px}
-nav{max-width:900px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px}
-.logo{font-size:27px;font-weight:bold;color:#f6c85c}
-select,button,input{font:inherit;border-radius:10px;padding:12px}
-select,input{border:1px solid #ddd;background:white}
-.hero{text-align:center;padding:40px 18px}
-.hero h1{color:#54258b;font-size:34px}
-.hero p{line-height:1.9;color:#71647e}
-.search{width:90%;max-width:500px;margin:15px}
-.btn{background:#633493;color:white;border:0;cursor:pointer}
-.grid{max-width:900px;margin:20px auto;padding:15px;display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.card{background:white;padding:20px;border-radius:16px;box-shadow:0 4px 18px #38205e12}
-.card h3{color:#593080}
-.card p{color:#756c80;font-size:14px;line-height:1.7}
-.emoji{font-size:32px}
-.action{margin:25px 15px;padding:25px;background:#eee5f7;border-radius:17px;text-align:center}
-footer{text-align:center;padding:25px;color:#81758c}
-@media(min-width:650px){.grid{grid-template-columns:repeat(4,1fr)}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Tahoma,Arial,sans-serif;line-height:1.7}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0}
+header{background:linear-gradient(115deg,#4e239e,#7846cf 62%,#9a70df);color:#fff;padding:20px max(18px,calc((100% - 1180px)/2)) 30px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{font-size:27px;font-weight:900}
+.brand span{color:#f3d58e}
+.top-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+select,.ghost{border:1px solid #ffffff55;background:#ffffff18;color:#fff;border-radius:12px;padding:9px 12px}
+.ghost option{color:#222}
+.hero{padding:30px 0 16px;max-width:760px}
+.hero h1{font-size:clamp(27px,5vw,43px);line-height:1.35;margin:0 0 10px}
+.hero p{margin:0;color:#eee5ff;font-size:15px}
+.searchbar{display:flex;gap:8px;max-width:760px;margin-top:20px}
+.searchbar input{flex:1;min-width:0;border:0;border-radius:13px;padding:13px 15px;outline:none}
+.primary{background:var(--gold);color:#382653;font-weight:800;border-radius:12px;padding:11px 17px}
+.wrap{max-width:1180px;margin:auto;padding:24px 18px 60px}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:10px;flex-wrap:wrap;margin:8px 0 17px}
+.section-head h2{margin:0;font-size:23px}
+.section-head p{margin:2px 0 0;color:var(--muted);font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:4px 0 28px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:15px;padding:13px 16px}
+.stat b{display:block;font-size:21px;color:var(--purple)}
+.stat small{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:17px;overflow:hidden;box-shadow:0 5px 18px #39205c0a;transition:.18s;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-3px);box-shadow:0 12px 28px #39205c14}
+.photo{height:150px;position:relative;background:#e8e0f5 center/cover no-repeat}
+.photo:after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,#1c153b66)}
+.tag{position:absolute;z-index:1;top:10px;right:10px;background:#fffe;color:var(--purple);padding:4px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.card-body{padding:14px;display:flex;flex-direction:column;flex:1}
+.card h3{font-size:17px;margin:0 0 5px}
+.card p{font-size:13px;color:var(--muted);margin:0 0 13px;flex:1}
+.card-actions{display:flex;gap:7px}
+.card-actions button{font-size:12px;border-radius:9px;padding:8px 10px}
+.open-btn{background:#efe8fb;color:var(--purple);font-weight:700;flex:1}
+.save-btn{background:#f5f3f8;color:#6c6579}
+.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 16px}
+.filter{border:1px solid var(--line);background:#fff;color:#665d76;padding:7px 12px;border-radius:20px;font-size:12px}
+.filter.active{background:var(--purple);border-color:var(--purple);color:#fff}
+.panel{background:#fff;border:1px solid var(--line);border-radius:17px;padding:18px;margin-top:28px}
+.panel h2{margin:0 0 4px;font-size:20px}
+.panel p{color:var(--muted);font-size:13px;margin:0 0 12px}
+.panel-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.outline{background:#fff;border:1px solid #d9c9f1;color:var(--purple);padding:9px 14px;border-radius:11px;font-weight:700}
+footer{text-align:center;color:#8a8496;font-size:12px;padding:25px;border-top:1px solid var(--line)}
+.modal-bg{position:fixed;inset:0;background:#1e1536a8;display:none;align-items:center;justify-content:center;padding:16px;z-index:20}
+.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:18px;width:min(620px,100%);max-height:90vh;overflow:auto;padding:20px;box-shadow:0 20px 60px #10091d55}
+.modal-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.modal h2{margin:0;font-size:21px}
+.close{background:#f2eff7;border-radius:9px;padding:5px 11px;color:#655b75}
+.modal p{color:var(--muted);font-size:14px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field{display:flex;flex-direction:column;gap:5px;margin:9px 0}
+.field.full{grid-column:1/-1}
+.field label{font-size:12px;color:#625a70;font-weight:700}
+.field input,.field select,.field textarea{width:100%;border:1px solid #e5dfed;border-radius:10px;padding:10px;background:#fff;color:#30283d}
+.field textarea{min-height:90px;resize:vertical}
+.notice{background:#fff8e8;border:1px solid #f0dfb6;border-radius:11px;padding:10px 12px;font-size:12px;color:#72571c;margin-top:12px}
+.item-list{display:grid;gap:10px}
+.item{border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.item b{display:block}
+.item small{color:var(--muted)}
+.empty{padding:25px;text-align:center;color:var(--muted);background:#fff;border:1px dashed #ddd4eb;border-radius:14px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){
+.grid{grid-template-columns:1fr 1fr;gap:10px}
+.photo{height:115px}.card-body{padding:11px}.card h3{font-size:15px}
+.card p{font-size:12px}.stats{gap:7px}.stat{padding:10px}
+.stat b{font-size:18px}.searchbar{flex-direction:column}
+.searchbar button{width:100%}.form-grid{grid-template-columns:1fr}
+.field.full{grid-column:auto}
+}
 </style>
 </head>
 <body>
-
 <header>
-<nav>
-<div class="logo">π PiLoop</div>
-<select id="language" onchange="changeLang(this.value)" aria-label="Language">
-<option value="en">🇬🇧 English</option>
-<option value="fa">🇮🇷 فارسی</option>
-<option value="ku">🌍 کوردی (سۆرانی)</option>
-<option value="ar">🇸🇦 العربية</option>
-<option value="tr">🇹🇷 Türkçe</option>
-<option value="de">🇩🇪 Deutsch</option>
-<option value="fr">🇫🇷 Français</option>
-<option value="es">🇪🇸 Español</option>
-<option value="zh">🇨🇳 中文</option>
-<option value="ja">🇯🇵 日本語</option>
-<option value="hi">🇮🇳 हिन्दी</option>
+<div class="top">
+<div class="brand">Pi<span>Loop</span></div>
+<div class="top-actions">
+<select id="language" aria-label="Language">
+<option value="fa">فارسی</option>
+<option value="en">English</option>
+<option value="ku">کوردی</option>
+<option value="ar">العربية</option>
+<option value="tr">Türkçe</option>
+<option value="de">Deutsch</option>
+<option value="fr">Français</option>
+<option value="es">Español</option>
+<option value="zh">中文</option>
+<option value="ja">日本語</option>
+<option value="hi">हिन्दी</option>
 </select>
-</nav>
+<button class="ghost" id="loginBtn">ورود با Pi (اتصال در مرحله بعد)</button>
+</div>
+</div>
+<div class="hero">
+<h1 id="heroTitle">یک شبکه جهانی برای پیدا کردن فرصت‌های واقعی</h1>
+<p id="heroText">خدمات، محصولات، همکاری، آموزش و کمک‌رسانی را در یک فضای مشترک کشف کنید.</p>
+<div class="searchbar">
+<input id="searchInput" placeholder="چه چیزی می‌خواهید پیدا کنید؟">
+<button class="primary" id="searchBtn">جست‌وجو</button>
+</div>
+</div>
 </header>
-
-<section class="hero">
-<h1 id="title"></h1>
-<p id="subtitle"></p>
-<input class="search" id="search" placeholder="">
-<br>
-<button class="btn" id="searchBtn" onclick="searchItems()"></button>
-</section>
-
-<section class="grid">
-<div class="card">
-<div class="emoji">🛠️</div>
-<h3 id="card0title"></h3>
-<p id="card0text"></p>
+<main class="wrap">
+<div class="stats">
+<div class="stat"><b id="sectionCount">۸</b><small>بخش کاربردی</small></div>
+<div class="stat"><b id="savedCount">۰</b><small>موارد ذخیره‌شده</small></div>
+<div class="stat"><b id="userItemsCount">۰</b><small>موارد ثبت‌شده روی این دستگاه</small></div>
 </div>
-<div class="card">
-<div class="emoji">📦</div>
-<h3 id="card1title"></h3>
-<p id="card1text"></p>
+<div class="section-head">
+<div><h2 id="sectionsTitle">بخش‌های PiLoop</h2><p id="sectionsSub">هر بخش برای یک نیاز واقعی طراحی شده است.</p></div>
+<button class="outline" id="addBtn">＋ ثبت مورد جدید</button>
 </div>
-<div class="card">
-<div class="emoji">💻</div>
-<h3 id="card2title"></h3>
-<p id="card2text"></p>
+<div class="toolbar" id="filters">
+<button class="filter active" data-filter="all">همه</button>
+<button class="filter" data-filter="services">خدمات</button>
+<button class="filter" data-filter="products">محصولات</button>
+<button class="filter" data-filter="community">جامعه</button>
+<button class="filter" data-filter="digital">کار دیجیتال</button>
+<button class="filter" data-filter="opportunities">همکاری</button>
+<button class="filter" data-filter="learning">آموزش</button>
+<button class="filter" data-filter="events">رویدادها</button>
+<button class="filter" data-filter="help">کمک‌رسانی</button>
+<button class="filter" data-filter="saved">ذخیره‌شده‌ها</button>
 </div>
-<div class="card">
-<div class="emoji">🤝</div>
-<h3 id="card3title"></h3>
-<p id="card3text"></p>
+<div class="grid" id="cards"></div>
+<section class="panel">
+<div class="panel-row">
+<div><h2 id="myTitle">فضای شخصی من</h2><p id="mySub">مواردی که در این دستگاه ثبت یا ذخیره کرده‌اید، اینجا نمایش داده می‌شوند.</p></div>
+<button class="outline" id="myItemsBtn">مشاهده موارد من</button>
 </div>
 </section>
-
-<section class="action">
-<h2 id="requestTitle"></h2>
-<p id="requestText"></p>
-<button class="btn" onclick="comingSoon()">+ <span id="requestBtn"></span></button>
+<section class="panel">
+<div class="panel-row">
+<div><h2 id="trustTitle">اعتماد و اعتبار</h2><p id="trustText">پروفایل‌های تأییدشده، امتیازها و گزارش‌های شفاف به کاربران کمک می‌کنند انتخاب آگاهانه‌تری داشته باشند.</p></div>
+<button class="outline" id="trustBtn">راهنمای اعتماد</button>
+</div>
 </section>
+</main>
+<footer>PiLoop · Built for a connected global community · Pi Network integration is not active yet</footer>
 
-<footer id="footer"></footer>
+<div class="modal-bg" id="modalBg">
+<div class="modal" role="dialog" aria-modal="true">
+<div class="modal-top"><h2 id="modalTitle">جزئیات</h2><button class="close" id="closeModal">بستن ✕</button></div>
+<div id="modalContent"></div>
+</div>
+</div>
 
 <script>
-const translations = {
-en:{
-title:"Connect. Trade. Grow.",
-subtitle:"A global community connecting people, businesses and services through the Pi ecosystem.",
-search:"Search products and services...",
-searchBtn:"Explore PiLoop",
-cards:[
-["Services","Find trusted service providers."],
-["Products","Discover products from businesses."],
-["Digital Work","Connect with digital professionals."],
-["Community","Meet people around the world."]
-],
-requestTitle:"Have a need? Create a request.",
-requestText:"Connect with people who can help you.",
-requestBtn:"Create Request",
-footer:"PiLoop © 2026 · Built for the Pi ecosystem",
-empty:"Please enter a search term.",
-coming:"Coming soon!"
-},
+const categories=[
+{id:'services',icon:'🛠️',title:'خدمات',desc:'متخصصان و ارائه‌دهندگان خدمات را پیدا کنید؛ نمونه‌کار ببینید و درخواست ثبت کنید.',tag:'متخصص و خدمات',img:'https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=900&q=85',actions:['پیدا کردن متخصص','ثبت خدمت']},
+{id:'products',icon:'🛍️',title:'محصولات',desc:'محصولات کسب‌وکارها را بررسی و مقایسه کنید و برای خرید با فروشنده ارتباط بگیرید.',tag:'بازار محصولات',img:'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=900&q=85',actions:['دیدن محصولات','ثبت محصول']},
+{id:'community',icon:'🌍',title:'جامعه',desc:'با کاربران سراسر جهان آشنا شوید، گروه بسازید و تجربه‌هایتان را به اشتراک بگذارید.',tag:'ارتباط جهانی',img:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=900&q=85',actions:['پیوستن به جامعه','معرفی خودم']},
+{id:'digital',icon:'💻',title:'کار دیجیتال',desc:'مهارت و نمونه‌کار ارائه کنید، پروژه بگیرید یا متخصص مناسب پروژه خود را پیدا کنید.',tag:'پروژه و مهارت',img:'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=85',actions:['دیدن پروژه‌ها','ثبت مهارت یا پروژه']},
+{id:'opportunities',icon:'🤝',title:'فرصت‌های همکاری',desc:'برای شراکت، توسعه کسب‌وکار و اجرای ایده‌ها همکار و شریک پیدا کنید.',tag:'شراکت و رشد',img:'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=85',actions:['دیدن فرصت‌ها','پیشنهاد همکاری']},
+{id:'learning',icon:'🎓',title:'آموزش و یادگیری',desc:'دوره‌ها، آموزش‌های کاربردی و مدرس‌ها را پیدا کنید و مسیر یادگیری بسازید.',tag:'دانش و مهارت',img:'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=85',actions:['دیدن آموزش‌ها','ثبت دوره']},
+{id:'events',icon:'📅',title:'رویدادها',desc:'رویدادهای آنلاین و حضوری، نشست‌ها و نمایشگاه‌ها را کشف و برای حضور ثبت‌نام کنید.',tag:'رویداد و گردهمایی',img:'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=900&q=85',actions:['تقویم رویدادها','ثبت رویداد']},
+{id:'help',icon:'❤️',title:'کمک‌رسانی',desc:'کمپین‌های کمک به خانواده‌های نیازمند، درمان، آموزش کودکان و شرایط اضطراری را معرفی کنید.',tag:'حمایت و همیاری',img:'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=900&q=85',actions:['دیدن کمپین‌ها','ثبت کمپین']}
+];
+
+const translations={
 fa:{
-title:"ارتباط بگیر، معامله کن، رشد کن",
-subtitle:"جامعه‌ای جهانی برای ارتباط مردم، کسب‌وکارها و خدمات در اکوسیستم Pi.",
-search:"جستجوی محصولات و خدمات...",
-searchBtn:"کاوش در PiLoop",
-cards:[
-["خدمات","ارائه‌دهندگان خدمات را پیدا کنید."],
-["محصولات","محصولات کسب‌وکارها را کشف کنید."],
-["کار دیجیتال","با متخصصان دیجیتال ارتباط بگیرید."],
-["جامعه","با افراد سراسر جهان آشنا شوید."]
-],
-requestTitle:"نیازی داری؟ درخواست ثبت کن.",
-requestText:"با کسانی که می‌توانند کمکت کنند ارتباط بگیر.",
-requestBtn:"ثبت درخواست",
-footer:"PiLoop © 2026 · ساخته‌شده برای اکوسیستم Pi",
-empty:"لطفاً عبارت موردنظر را وارد کنید.",
-coming:"به‌زودی!"
+hero:'یک شبکه جهانی برای پیدا کردن فرصت‌های واقعی',
+sub:'خدمات، محصولات، همکاری، آموزش و کمک‌رسانی را در یک فضای مشترک کشف کنید.',
+search:'چه چیزی می‌خواهید پیدا کنید؟',searchBtn:'جست‌وجو',
+sections:'بخش‌های PiLoop',sectionsSub:'هر بخش برای یک نیاز واقعی طراحی شده است.',
+add:'＋ ثبت مورد جدید',all:'همه',saved:'ذخیره‌شده‌ها',
+details:'جزئیات',close:'بستن ✕',my:'فضای شخصی من',
+mySub:'مواردی که در این دستگاه ثبت یا ذخیره کرده‌اید، اینجا نمایش داده می‌شوند.',
+myItems:'مشاهده موارد من',trust:'اعتماد و اعتبار',
+trustText:'پروفایل‌های تأییدشده، امتیازها و گزارش‌های شفاف به کاربران کمک می‌کنند انتخاب آگاهانه‌تری داشته باشند.',
+trustBtn:'راهنمای اعتماد',login:'ورود با Pi (اتصال در مرحله بعد)',
+save:'ذخیره',savedBtn:'ذخیره شد',open:'مشاهده و اقدام',
+empty:'هنوز موردی ثبت نشده است.',
+local:'این اطلاعات فعلاً فقط روی همین دستگاه ذخیره می‌شود؛ برای نمایش عمومی باید به پایگاه داده متصل شویم.',
+name:'عنوان',description:'توضیحات',contact:'راه ارتباطی (اختیاری)',
+location:'شهر یا کشور',submit:'ثبت روی این دستگاه',cancel:'انصراف',
+kind:'نوع ثبت',success:'با موفقیت روی این دستگاه ثبت شد.',
+request:'ثبت درخواست',requestSent:'درخواست شما در فهرست شخصی همین دستگاه ذخیره شد.',
+trustInfo:'برای اعتماد واقعی، PiLoop باید بعداً احراز هویت، گزارش تخلف، امتیازدهی پس از انجام معامله و بررسی کمپین‌های کمک‌رسانی را از طریق سرور پیاده‌سازی کند.',
+loginInfo:'ورود واقعی با Pi نیازمند ثبت برنامه در Pi Developer Portal، افزودن SDK و تأیید access token در بک‌اند امن است. این دکمه هنوز ورود واقعی انجام نمی‌دهد.',
+noResults:'موردی با این جست‌وجو پیدا نشد.'
 },
-ku:{
-title:"پەیوەندی بکە، مامەڵە بکە، گەشە بکە",
-subtitle:"کۆمەڵگایەکی جیهانی بۆ پەیوەندی نێوان خەڵک و بازرگانی و خزمەتگوزاری.",
-search:"گەڕان بۆ بەرهەم و خزمەتگوزاری...",
-searchBtn:"گەڕان لە PiLoop",
-cards:[
-["خزمەتگوزاری","خزمەتگوزارەکان بدۆزەرەوە."],
-["بەرهەمەکان","بەرهەمەکانی بازرگانان ببینە."],
-["کاری دیجیتاڵ","پەیوەندی بە پسپۆڕانی دیجیتاڵەوە بکە."],
-["کۆمەڵگا","لەگەڵ خەڵکی جیهان ئاشنا ببە."]
-],
-requestTitle:"پێویستیت هەیە؟ داواکاری تۆمار بکە.",
-requestText:"پەیوەندی بەو کەسانەوە بکە کە یارمەتیت دەدەن.",
-requestBtn:"تۆمارکردنی داواکاری",
-footer:"PiLoop © 2026 · بۆ ژینگەی Pi دروستکراوە",
-empty:"تکایە وشەیەک بنووسە.",
-coming:"بەم زووانە!"
-},
-ar:{
-title:"تواصل. تداول. انطلق.",
-subtitle:"مجتمع عالمي يربط الأشخاص والشركات والخدمات من خلال منظومة Pi.",
-search:"ابحث عن المنتجات والخدمات...",
-searchBtn:"استكشف PiLoop",
-cards:[
-["الخدمات","اعثر على مقدمي الخدمات الموثوقين."],
-["المنتجات","اكتشف منتجات الشركات."],
-["العمل الرقمي","تواصل مع المتخصصين الرقميين."],
-["المجتمع","تعرّف على أشخاص من جميع أنحاء العالم."]
-],
-requestTitle:"هل تحتاج إلى شيء؟ أنشئ طلباً.",
-requestText:"تواصل مع الأشخاص الذين يمكنهم مساعدتك.",
-requestBtn:"إنشاء طلب",
-footer:"PiLoop © 2026 · مبني لمنظومة Pi",
-empty:"يرجى إدخال كلمة للبحث.",
-coming:"قريباً!"
-},
-tr:{
-title:"Bağlan. Ticaret Yap. Geliş.",
-subtitle:"Pi ekosistemi aracılığıyla insanları, işletmeleri ve hizmetleri buluşturan küresel topluluk.",
-search:"Ürün ve hizmet ara...",
-searchBtn:"PiLoop'u Keşfet",
-cards:[
-["Hizmetler","Güvenilir hizmet sağlayıcıları bulun."],
-["Ürünler","İşletmelerin ürünlerini keşfedin."],
-["Dijital İş","Dijital uzmanlarla bağlantı kurun."],
-["Topluluk","Dünyanın dört bir yanından insanlarla tanışın."]
-],
-requestTitle:"Bir ihtiyacınız mı var? Talep oluşturun.",
-requestText:"Size yardımcı olabilecek kişilerle bağlantı kurun.",
-requestBtn:"Talep Oluştur",
-footer:"PiLoop © 2026 · Pi ekosistemi için geliştirildi",
-empty:"Lütfen bir arama terimi girin.",
-coming:"Çok yakında!"
-},
-de:{
-title:"Verbinden. Handeln. Wachsen.",
-subtitle:"Eine globale Gemeinschaft, die Menschen, Unternehmen und Dienstleistungen im Pi-Ökosystem verbindet.",
-search:"Produkte und Dienstleistungen suchen...",
-searchBtn:"PiLoop entdecken",
-cards:[
-["Dienstleistungen","Finden Sie vertrauenswürdige Anbieter."],
-["Produkte","Entdecken Sie Produkte von Unternehmen."],
-["Digitale Arbeit","Vernetzen Sie sich mit digitalen Fachleuten."],
-["Gemeinschaft","Lernen Sie Menschen aus aller Welt kennen."]
-],
-requestTitle:"Sie benötigen etwas? Erstellen Sie eine Anfrage.",
-requestText:"Verbinden Sie sich mit Menschen, die Ihnen helfen können.",
-requestBtn:"Anfrage erstellen",
-footer:"PiLoop © 2026 · Entwickelt für das Pi-Ökosystem",
-empty:"Bitte geben Sie einen Suchbegriff ein.",
-coming:"Demnächst verfügbar!"
-},
-fr:{
-title:"Connectez. Échangez. Progressez.",
-subtitle:"Une communauté mondiale reliant les personnes, les entreprises et les services grâce à l'écosystème Pi.",
-search:"Rechercher des produits et services...",
-searchBtn:"Explorer PiLoop",
-cards:[
-["Services","Trouvez des prestataires de confiance."],
-["Produits","Découvrez les produits des entreprises."],
-["Travail numérique","Connectez-vous avec des professionnels du numérique."],
-["Communauté","Rencontrez des personnes du monde entier."]
-],
-requestTitle:"Un besoin ? Créez une demande.",
-requestText:"Connectez-vous avec des personnes qui peuvent vous aider.",
-requestBtn:"Créer une demande",
-footer:"PiLoop © 2026 · Conçu pour l'écosystème Pi",
-empty:"Veuillez saisir un terme de recherche.",
-coming:"Bientôt disponible !"
-},
-es:{
-title:"Conecta. Intercambia. Crece.",
-subtitle:"Una comunidad global que conecta personas, empresas y servicios a través del ecosistema Pi.",
-search:"Buscar productos y servicios...",
-searchBtn:"Explorar PiLoop",
-cards:[
-["Servicios","Encuentra proveedores de servicios confiables."],
-["Productos","Descubre productos de empresas."],
-["Trabajo digital","Conecta con profesionales digitales."],
-["Comunidad","Conoce personas de todo el mundo."]
-],
-requestTitle:"¿Necesitas algo? Crea una solicitud.",
-requestText:"Conecta con personas que pueden ayudarte.",
-requestBtn:"Crear solicitud",
-footer:"PiLoop © 2026 · Creado para el ecosistema Pi",
-empty:"Por favor, introduce un término de búsqueda.",
-coming:"¡Próximamente!"
-},
-zh:{
-title:"连接 · 交易 · 成长",
-subtitle:"通过 Pi 生态系统连接全球用户、企业和服务的社区。",
-search:"搜索产品和服务...",
-searchBtn:"探索 PiLoop",
-cards:[
-["服务","寻找值得信赖的服务提供商。"],
-["产品","发现企业提供的产品。"],
-["数字工作","与数字领域专业人士建立联系。"],
-["社区","认识来自世界各地的人们。"]
-],
-requestTitle:"有需求？创建一个请求。",
-requestText:"与能够帮助您的人建立联系。",
-requestBtn:"创建请求",
-footer:"PiLoop © 2026 · 为 Pi 生态系统打造",
-empty:"请输入搜索内容。",
-coming:"即将推出！"
-},
-ja:{
-title:"つながる。取引する。成長する。",
-subtitle:"Piエコシステムを通じて人々、企業、サービスをつなぐグローバルコミュニティ。",
-search:"商品やサービスを検索...",
-searchBtn:"PiLoopを探索",
-cards:[
-["サービス","信頼できるサービス提供者を見つけましょう。"],
-["商品","企業の商品を発見しましょう。"],
-["デジタルワーク","デジタル分野の専門家とつながりましょう。"],
-["コミュニティ","世界中の人々と出会いましょう。"]
-],
-requestTitle:"お困りですか？リクエストを作成しましょう。",
-requestText:"あなたを助けてくれる人とつながりましょう。",
-requestBtn:"リクエストを作成",
-footer:"PiLoop © 2026 · Piエコシステムのために開発",
-empty:"検索語を入力してください。",
-coming:"近日公開！"
-},
-hi:{
-title:"जुड़ें। व्यापार करें। आगे बढ़ें।",
-subtitle:"Pi इकोसिस्टम के माध्यम से लोगों, व्यवसायों और सेवाओं को जोड़ने वाला वैश्विक समुदाय।",
-search:"उत्पाद और सेवाएँ खोजें...",
-searchBtn:"PiLoop देखें",
-cards:[
-["सेवाएँ","विश्वसनीय सेवा प्रदाताओं को खोजें।"],
-["उत्पाद","व्यवसायों के उत्पाद खोजें।"],
-["डिजिटल कार्य","डिजिटल विशेषज्ञों से जुड़ें।"],
-["समुदाय","दुनिया भर के लोगों से मिलें।"]
-],
-requestTitle:"क्या आपको कुछ चाहिए? अनुरोध बनाएँ।",
-requestText:"उन लोगों से जुड़ें जो आपकी मदद कर सकते हैं।",
-requestBtn:"अनुरोध बनाएँ",
-footer:"PiLoop © 2026 · Pi इकोसिस्टम के लिए बनाया गया",
-empty:"कृपया खोज शब्द दर्ज करें।",
-coming:"जल्द आ रहा है!"
+en:{
+hero:'A global network for real opportunities',
+sub:'Discover services, products, collaboration, learning and support in one place.',
+search:'What are you looking for?',searchBtn:'Search',
+sections:'Explore PiLoop',sectionsSub:'Each space is designed for a practical need.',
+add:'+ Add a listing',all:'All',saved:'Saved',details:'Details',
+close:'Close ✕',my:'My space',
+mySub:'Items you add or save on this device appear here.',
+myItems:'My items',trust:'Trust & reputation',
+trustText:'Verified profiles, ratings and transparent reports help people make informed choices.',
+trustBtn:'Trust guide',login:'Pi Login (setup required)',
+save:'Save',savedBtn:'Saved',open:'View & take action',
+empty:'Nothing here yet.',
+local:'For now, data is stored only on this device. Public listings require a connected database.',
+name:'Title',description:'Description',contact:'Contact (optional)',
+location:'City or country',submit:'Save on this device',cancel:'Cancel',
+kind:'Listing type',success:'Saved on this device.',
+request:'Send request',requestSent:'Your request was saved in your personal list on this device.',
+trustInfo:'Real trust requires server-side identity verification, abuse reporting, post-transaction ratings and reviewed support campaigns.',
+loginInfo:'Real Pi login requires app registration in the Pi Developer Portal, the SDK and secure backend token verification. This button does not authenticate yet.',
+noResults:'No matching listings found.'
 }
 };
 
-function changeLang(lang){
-const t=translations[lang];
-if(!t)return;
+let lang='fa',filter='all',query='';
+const t=key=>(translations[lang]&&translations[lang][key])||translations.fa[key]||key;
+const load=(key,fallback=[])=>{try{return JSON.parse(localStorage.getItem('piloop_'+key))||fallback}catch(e){return fallback}};
+const save=(key,value)=>localStorage.setItem('piloop_'+key,JSON.stringify(value));
+let listings=load('listings'),savedIds=load('saved',[]);
 
-document.documentElement.lang=lang;
-document.documentElement.dir=
-["fa","ku","ar"].includes(lang)?"rtl":"ltr";
+function escapeHtml(s){
+return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
 
-document.getElementById("title").textContent=t.title;
-document.getElementById("subtitle").textContent=t.subtitle;
-document.getElementById("search").placeholder=t.search;
-document.getElementById("searchBtn").textContent=t.searchBtn;
-document.getElementById("requestTitle").textContent=t.requestTitle;
-document.getElementById("requestText").textContent=t.requestText;
-document.getElementById("requestBtn").textContent=t.requestBtn;
-document.getElementById("footer").textContent=t.footer;
-
-t.cards.forEach((card,i)=>{
-document.getElementById("card"+i+"title").textContent=card[0];
-document.getElementById("card"+i+"text").textContent=card[1];
+function render(){
+const host=document.getElementById('cards');host.innerHTML='';
+let list=categories.filter(c=>(filter==='all'||filter==='saved'||c.id===filter)&&(!query||(c.title+' '+c.desc+' '+c.tag).toLowerCase().includes(query)));
+if(filter==='saved')list=list.filter(c=>savedIds.includes(c.id));
+if(!list.length){host.innerHTML='<div class="empty" style="grid-column:1/-1">'+t('noResults')+'</div>';return;}
+list.forEach(c=>{
+const isSaved=savedIds.includes(c.id);
+const card=document.createElement('article');card.className='card';
+card.innerHTML=`<div class="photo" style="background-image:url('${c.img}')"><span class="tag">${c.icon} ${c.tag}</span></div><div class="card-body"><h3>${c.title}</h3><p>${c.desc}</p><div class="card-actions"><button class="open-btn" data-open="${c.id}">${t('open')}</button><button class="save-btn" data-save="${c.id}" aria-label="${t('save')}">${isSaved?'★':'☆'}</button></div></div>`;
+host.appendChild(card);
 });
+document.getElementById('savedCount').textContent=savedIds.length;
+document.getElementById('userItemsCount').textContent=listings.length;
 }
 
-function searchItems(){
-const q=document.getElementById("search").value.trim();
-const t=translations[document.getElementById("language").value];
-alert(q?"Search will be connected in a future version.":t.empty);
+function openModal(title,content){
+document.getElementById('modalTitle').textContent=title;
+document.getElementById('modalContent').innerHTML=content;
+document.getElementById('modalBg').classList.add('show');
+}
+function closeModal(){document.getElementById('modalBg').classList.remove('show');}
+
+function categoryDetails(id){
+const c=categories.find(x=>x.id===id);if(!c)return;
+const own=listings.filter(x=>x.category===id);
+const items=own.length?`<div class="item-list">${own.map(x=>`<div class="item"><div><b>${escapeHtml(x.title)}</b><small>${escapeHtml(x.location||'')} · ${escapeHtml(x.description)}</small></div><button class="outline" data-request="${x.id}">${t('request')}</button></div>`).join('')}</div>`:`<div class="empty">${t('empty')}</div>`;
+openModal(c.icon+' '+c.title,`<p>${c.desc}</p><h3>موارد ثبت‌شده در این دستگاه</h3>${items}<div class="panel-row" style="margin-top:14px"><button class="primary" data-addcat="${id}">${c.actions[1]}</button><small>برای دیدن آگهی‌های عمومی، اتصال پایگاه داده لازم است.</small></div>`);
 }
 
-function comingSoon(){
-const lang=document.getElementById("language").value;
-alert(translations[lang].coming);
+function addForm(category='services'){
+const options=categories.map(c=>`<option value="${c.id}" ${c.id===category?'selected':''}>${c.title}</option>`).join('');
+openModal(t('add'),`<form id="listingForm"><div class="form-grid"><div class="field"><label>${t('kind')}</label><select name="category">${options}</select></div><div class="field"><label>${t('name')}</label><input name="title" required maxlength="90" placeholder="مثلاً طراحی سایت، فروش محصول..."></div><div class="field full"><label>${t('description')}</label><textarea name="description" required maxlength="700" placeholder="جزئیات، شرایط و اطلاعات مفید را بنویسید"></textarea></div><div class="field"><label>${t('location')}</label><input name="location" maxlength="80"></div><div class="field"><label>${t('contact')}</label><input name="contact" maxlength="100"></div></div><div class="notice">${t('local')}</div><div class="panel-row" style="margin-top:14px"><button class="primary" type="submit">${t('submit')}</button><button class="outline" type="button" id="cancelForm">${t('cancel')}</button></div></form>`);
+document.getElementById('cancelForm').onclick=closeModal;
+document.getElementById('listingForm').onsubmit=e=>{
+e.preventDefault();
+const f=new FormData(e.target);
+const item={
+id:'l'+Date.now(),category:f.get('category'),
+title:f.get('title').trim(),description:f.get('description').trim(),
+location:f.get('location').trim(),contact:f.get('contact').trim(),
+createdAt:new Date().toISOString()
+};
+listings.unshift(item);save('listings',listings);
+closeModal();render();alert(t('success'));
+};
 }
 
-changeLang("en");
+function showMyItems(){
+const body=listings.length?`<div class="item-list">${listings.map(x=>`<div class="item"><div><b>${escapeHtml(x.title)}</b><small>${categories.find(c=>c.id===x.category)?.title||''} · ${escapeHtml(x.location||'')}</small></div><button class="close" data-delete="${x.id}">حذف</button></div>`).join('')}</div>`:`<div class="empty">${t('empty')}</div>`;
+openModal(t('my'),body+`<div class="notice">${t('local')}</div>`);
+}
+
+document.addEventListener('click',e=>{
+const open=e.target.closest('[data-open]');
+if(open)categoryDetails(open.dataset.open);
+
+const sv=e.target.closest('[data-save]');
+if(sv){
+const id=sv.dataset.save;
+savedIds=savedIds.includes(id)?savedIds.filter(x=>x!==id):[...savedIds,id];
+save('saved',savedIds);render();
+}
+
+const add=e.target.closest('[data-addcat]');
+if(add)addForm(add.dataset.addcat);
+
+const req=e.target.closest('[data-request]');
+if(req){
+const item=listings.find(x=>x.id===req.dataset.request);
+if(item){
+listings.unshift({
+id:'r'+Date.now(),category:item.category,
+title:'درخواست: '+item.title,
+description:'درخواست ارتباط برای مورد ثبت‌شده',
+location:item.location,contact:item.contact,
+createdAt:new Date().toISOString()
+});
+save('listings',listings);closeModal();render();alert(t('requestSent'));
+}
+}
+
+const del=e.target.closest('[data-delete]');
+if(del){
+listings=listings.filter(x=>x.id!==del.dataset.delete);
+save('listings',listings);showMyItems();render();
+}
+});
+
+document.getElementById('filters').addEventListener('click',e=>{
+const b=e.target.closest('[data-filter]');if(!b)return;
+filter=b.dataset.filter;
+document.querySelectorAll('.filter').forEach(x=>x.classList.toggle('active',x===b));
+render();
+});
+
+document.getElementById('searchBtn').onclick=()=>{
+query=document.getElementById('searchInput').value.trim().toLowerCase();
+filter='all';
+document.querySelectorAll('.filter').forEach(x=>x.classList.toggle('active',x.dataset.filter==='all'));
+render();
+};
+document.getElementById('searchInput').addEventListener('keydown',e=>{
+if(e.key==='Enter')document.getElementById('searchBtn').click();
+});
+
+document.getElementById('addBtn').onclick=()=>addForm();
+document.getElementById('myItemsBtn').onclick=showMyItems;
+
+document.getElementById('trustBtn').onclick=()=>openModal(t('trust'),`<p>${t('trustInfo')}</p><ul><li>تأیید هویت و حساب</li><li>ثبت نظر فقط پس از تعامل واقعی</li><li>گزارش تخلف و رسیدگی مدیر</li><li>بررسی مدارک کمپین‌های کمک‌رسانی</li></ul>`);
+
+document.getElementById('loginBtn').onclick=()=>openModal(t('login'),`<p>${t('loginInfo')}</p><div class="notice">کلید محرمانه سرور یا access token را هرگز داخل index.html قرار ندهید.</div>`);
+
+document.getElementById('closeModal').onclick=closeModal;
+document.getElementById('modalBg').addEventListener('click',e=>{
+if(e.target.id==='modalBg')closeModal();
+});
+
+document.getElementById('language').onchange=()=>{
+lang=document.getElementById('language').value;
+document.documentElement.lang=lang;
+document.documentElement.dir=['fa','ar','ku'].includes(lang)?'rtl':'ltr';
+applyText();render();
+};
+
+function applyText(){
+document.getElementById('heroTitle').textContent=t('hero');
+document.getElementById('heroText').textContent=t('sub');
+document.getElementById('searchInput').placeholder=t('search');
+document.getElementById('searchBtn').textContent=t('searchBtn');
+document.getElementById('sectionsTitle').textContent=t('sections');
+document.getElementById('sectionsSub').textContent=t('sectionsSub');
+document.getElementById('addBtn').textContent=t('add');
+document.getElementById('myTitle').textContent=t('my');
+document.getElementById('mySub').textContent=t('mySub');
+document.getElementById('myItemsBtn').textContent=t('myItems');
+document.getElementById('trustTitle').textContent=t('trust');
+document.getElementById('trustText').textContent=t('trustText');
+document.getElementById('trustBtn').textContent=t('trustBtn');
+document.getElementById('loginBtn').textContent=t('login');
+}
+applyText();
+render();
 </script>
 </body>
 </html>
