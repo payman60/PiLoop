@@ -1,209 +1,347 @@
 
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#51249b">
+<title>PiLoop - Global Community</title>
+<style>
+:root{--p:#51249b;--p2:#7545c7;--gold:#edbd50;--bg:#f7f5fc;--ink:#272239;--muted:#777187}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Tahoma,Arial,sans-serif;line-height:1.8}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+header{background:linear-gradient(125deg,#30145e,#7444c4);color:white;padding:22px 5% 30px;border-radius:0 0 28px 28px}
+.head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.logo{font-size:29px;font-weight:900}
+.logo span{color:var(--gold)}
+.pill{background:var(--gold);color:#32145e;border:0;border-radius:12px;padding:9px 14px;font-weight:bold}
+.hero{max-width:780px;margin:27px 0 10px}
+.hero h1{font-size:clamp(24px,5vw,37px);margin:0 0 8px}
+.hero p{color:#eee;margin:0 0 20px}
+.search{background:white;display:flex;padding:6px;border-radius:13px;gap:6px}
+.search input{flex:1;min-width:0;border:0;outline:0;padding:10px;color:#222}
+.search button{background:var(--p);color:white;border:0;border-radius:9px;padding:9px 15px}
+main{max-width:1150px;margin:auto;padding:20px 15px 105px}
+.heading{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:20px 0 12px}
+.heading h2{font-size:19px;margin:0}
+.small{font-size:12px;color:var(--muted)}
+.categories{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
+.category{background:white;border:1px solid #ebe7f2;border-radius:16px;padding:14px 5px;text-align:center;color:var(--ink)}
+.category .emoji{display:block;font-size:29px}
+.category strong{font-size:12px}
+.category.active{border:2px solid var(--gold);background:#fffaf0}
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0}
+.filters button{background:white;border:1px solid #e4ddec;color:var(--p);border-radius:22px;padding:7px 13px;font-size:12px}
+.filters button.active{background:var(--p);color:white}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{background:white;border:1px solid #eee;border-radius:16px;overflow:hidden;box-shadow:0 5px 18px #2e175b0b}
+.cover{height:130px;background:linear-gradient(135deg,#e9defb,#fff0cd);display:grid;place-items:center;font-size:48px}
+.cardbody{padding:13px}
+.card h3{font-size:15px;margin:0 0 6px}
+.card p{font-size:12px;color:var(--muted);margin:5px 0 10px;overflow-wrap:anywhere}
+.meta{font-size:11px;color:var(--muted)}
+.actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}
+.actions button{flex:1;border:0;border-radius:9px;padding:8px 5px;font-size:11px;background:#f0ebfa;color:var(--p)}
+.actions .view{background:var(--p);color:white}
+.actions .delete{background:#fff0f0;color:#b32626}
+.empty{grid-column:1/-1;background:white;border-radius:15px;padding:25px;text-align:center;color:var(--muted)}
+nav{position:fixed;bottom:0;left:0;right:0;background:white;box-shadow:0 -4px 16px #0001;display:flex;justify-content:space-around;padding:8px 2px calc(8px + env(safe-area-inset-bottom));z-index:5}
+nav button{border:0;background:transparent;color:#777;font-size:10px;display:flex;flex-direction:column;align-items:center}
+nav span{font-size:20px}
+nav button.active{color:var(--p);font-weight:bold}
+.fab{position:fixed;bottom:75px;left:15px;z-index:6;background:var(--gold);color:#32145e;border:0;border-radius:30px;padding:12px 17px;font-weight:bold;box-shadow:0 4px 14px #0002}
+.modal{display:none;position:fixed;inset:0;background:#17102099;z-index:10;align-items:center;justify-content:center;padding:14px}
+.modal.show{display:flex}
+.dialog{width:min(100%,520px);max-height:90vh;overflow:auto;background:white;border-radius:19px;padding:19px}
+.dialog h2{margin:0 0 13px;font-size:20px}
+.dialog label{font-size:12px;font-weight:bold}
+.dialog input,.dialog textarea,.dialog select{display:block;width:100%;padding:11px;border:1px solid #ddd;border-radius:10px;margin:6px 0 12px;background:white}
+.dialog textarea{min-height:90px}
+.dialogbuttons{display:flex;gap:8px;margin-top:12px}
+.dialogbuttons button{flex:1;border:0;border-radius:10px;padding:10px}
+.primary{background:var(--p);color:white}
+.cancel{background:#eee;color:#333}
+.detailtext{white-space:pre-wrap;overflow-wrap:anywhere}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
+@media(max-width:700px){.categories{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:430px){.cards{grid-template-columns:1fr}.cover{height:120px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="head">
+  <div class="logo">Pi<span>Loop</span></div>
+  <button class="pill" onclick="profile()">حساب من 👤</button>
+ </div>
+ <div class="hero">
+  <h1>جهانی از ارتباط و فرصت</h1>
+  <p>کسب‌وکار، خدمات، آموزش، همکاری و کمک‌رسانی را در یک جامعه جهانی کشف کن.</p>
+  <div class="search">
+   <input id="search" placeholder="جستجوی خدمات، محصولات و فرصت‌ها..." oninput="render()">
+   <button onclick="render()">جستجو</button>
+  </div>
+ </div>
+</header>
+
+<main>
+ <div class="heading"><h2>دسته‌بندی‌ها</h2><span class="small">۸ بخش اصلی</span></div>
+ <div class="categories" id="categories"></div>
+
+ <div class="heading">
+  <h2 id="listHeading">آخرین موارد</h2>
+  <span class="small" id="total"></span>
+ </div>
+ <div class="filters">
+  <button class="active" onclick="changeView('all',this)">همه موارد</button>
+  <button onclick="changeView('saved',this)">♥ علاقه‌مندی‌ها</button>
+  <button onclick="changeView('mine',this)">موارد من</button>
+ </div>
+ <div class="cards" id="results"></div>
+ <footer>PiLoop · Connect · Discover · Collaborate</footer>
+</main>
+
+<button class="fab" onclick="openAdd()">＋ ثبت مورد جدید</button>
+
+<nav>
+ <button class="active" onclick="home(this)"><span>⌂</span>خانه</button>
+ <button onclick="searchFocus()"><span>⌕</span>جستجو</button>
+ <button onclick="changeView('saved',null)"><span>♥</span>ذخیره‌ها</button>
+ <button onclick="openAdd()"><span>＋</span>ثبت مورد</button>
+ <button onclick="profile()"><span>👤</span>پروفایل</button>
+</nav>
+
+<div class="modal" id="addModal">
+ <div class="dialog">
+  <h2>ثبت مورد جدید</h2>
+  <form id="addForm">
+   <label>عنوان</label>
+   <input id="title" required maxlength="90" placeholder="عنوان مورد خود را بنویسید">
+   <label>دسته‌بندی</label>
+   <select id="category"></select>
+   <label>توضیحات</label>
+   <textarea id="description" required maxlength="1000" placeholder="توضیحات کامل..."></textarea>
+   <label>مکان</label>
+   <input id="location" placeholder="شهر یا کشور">
+   <label>راه ارتباطی (اختیاری)</label>
+   <input id="contact" placeholder="ایمیل یا شناسه ارتباطی">
+   <div class="dialogbuttons">
+    <button type="button" class="cancel" onclick="closeModal('addModal')">انصراف</button>
+    <button type="submit" class="primary">ثبت مورد</button>
+   </div>
+  </form>
+ </div>
+</div>
+
+<div class="modal" id="detailModal">
+ <div class="dialog">
+  <h2 id="detailTitle"></h2>
+  <div class="small" id="detailCategory"></div>
+  <p class="detailtext" id="detailDescription"></p>
+  <p id="detailLocation" class="small"></p>
+  <p id="detailContact"></p>
+  <div class="dialogbuttons">
+   <button class="cancel" onclick="closeModal('detailModal')">بستن</button>
+   <button class="primary" id="detailFavorite">ذخیره ♥</button>
+  </div>
+ </div>
+</div>
+
+<div class="modal" id="profileModal">
+ <div class="dialog">
+  <h2>پروفایل PiLoop</h2>
+  <p>به جامعه PiLoop خوش آمدی.</p>
+  <div id="stats"></div>
+  <p class="small">ورود واقعی با Pi و حساب کاربری آنلاین در مرحله اتصال به سرور فعال خواهد شد.</p>
+  <div class="dialogbuttons">
+   <button class="cancel" onclick="closeModal('profileModal')">بستن</button>
+  </div>
+ </div>
+</div>
+
 <script>
 const categories={
- services:"خدمات",
- products:"محصولات",
- digital:"کار دیجیتال",
- community:"جامعه",
- opportunities:"فرصت‌های همکاری",
- learning:"آموزش و یادگیری",
- events:"رویدادها",
- help:"کمک‌رسانی"
+ services:{name:"خدمات",icon:"🛠️"},
+ products:{name:"محصولات",icon:"🛍️"},
+ digital:{name:"کار دیجیتال",icon:"💻"},
+ community:{name:"جامعه",icon:"🌍"},
+ opportunities:{name:"فرصت‌های همکاری",icon:"🤝"},
+ learning:{name:"آموزش و یادگیری",icon:"📚"},
+ events:{name:"رویدادها",icon:"🎫"},
+ help:{name:"کمک‌رسانی",icon:"💛"}
 };
 
-let currentCategory="";
+const initial=[
+ {id:"demo1",title:"معرفی خدمات و متخصصان",category:"services",description:"خدمات تخصصی خود را معرفی کنید و ارائه‌دهندگان خدمات را پیدا کنید.",location:"جهانی"},
+ {id:"demo2",title:"محصولات و فروشگاه‌ها",category:"products",description:"محصولات و کسب‌وکارها را کشف کنید و با فروشندگان ارتباط بگیرید.",location:"جهانی"},
+ {id:"demo3",title:"همکاری دیجیتال",category:"digital",description:"برای طراحی، برنامه‌نویسی و تولید محتوا همکار پیدا کنید.",location:"آنلاین"},
+ {id:"demo4",title:"جامعه جهانی",category:"community",description:"با کاربران دیگر آشنا شوید و تجربه‌های خود را به اشتراک بگذارید.",location:"جهانی"},
+ {id:"demo5",title:"فرصت‌های همکاری",category:"opportunities",description:"برای توسعه ایده‌ها و کسب‌وکارهای جدید شریک پیدا کنید.",location:"جهانی"},
+ {id:"demo6",title:"آموزش و یادگیری",category:"learning",description:"مهارت‌های خود را آموزش دهید یا فرصت یادگیری پیدا کنید.",location:"آنلاین"},
+ {id:"demo7",title:"رویدادها",category:"events",description:"نشست‌ها، وبینارها و رویدادهای آموزشی را معرفی کنید.",location:"جهانی"},
+ {id:"demo8",title:"کمک‌رسانی",category:"help",description:"کمپین‌های حمایت از خانواده‌های نیازمند، کودکان و امدادرسانی را معرفی کنید. اعتبار برگزارکننده و مقصد کمک را قبل از پرداخت بررسی کنید.",location:"جهانی"}
+];
+
+function load(key,fallback){
+ try{
+  const value=JSON.parse(localStorage.getItem(key));
+  return value===null?fallback:value;
+ }catch(e){return fallback;}
+}
+let items=load("piloop_items_v2",initial);
+let saved=load("piloop_saved_v2",[]);
 let currentView="all";
+let activeCategory="all";
+let selectedId=null;
 
-let items=JSON.parse(localStorage.getItem("piloop_items")||"[]");
-let favorites=JSON.parse(localStorage.getItem("piloop_favorites")||"[]");
-
-function save(){
- localStorage.setItem("piloop_items",JSON.stringify(items));
- localStorage.setItem("piloop_favorites",JSON.stringify(favorites));
+function saveData(){
+ localStorage.setItem("piloop_items_v2",JSON.stringify(items));
+ localStorage.setItem("piloop_saved_v2",JSON.stringify(saved));
 }
-
-function toast(message){
- const el=document.getElementById("toast");
- el.textContent=message;
- el.style.display="block";
- setTimeout(()=>el.style.display="none",2600);
-}
-
-function openModal(title,html){
- document.getElementById("modalTitle").textContent=title;
- document.getElementById("modalContent").innerHTML=html;
- document.getElementById("modal").style.display="block";
-}
-
-function closeModal(){
- document.getElementById("modal").style.display="none";
-}
-
-function openCategory(key){
- currentCategory=key;
- currentView="category";
- document.getElementById("listingTitle").textContent=categories[key];
- renderListings();
- document.getElementById("listingPanel").scrollIntoView({behavior:"smooth"});
-}
-
-function openAdd(){
- openModal("ثبت مورد جدید",`
- <form onsubmit="addListing(event)">
- <label>عنوان</label>
- <input class="field" id="itemTitle" required maxlength="90" placeholder="عنوان مورد را بنویسید">
-
- <label>دسته‌بندی</label>
- <select class="field" id="itemCategory">
- ${Object.entries(categories).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}
- </select>
-
- <label>توضیحات</label>
- <textarea class="field" id="itemDescription" required maxlength="1000" placeholder="توضیحات کامل را بنویسید"></textarea>
-
- <label>کشور یا شهر</label>
- <input class="field" id="itemLocation" maxlength="80" placeholder="مثلاً ایران، مهاباد">
-
- <label>راه ارتباطی</label>
- <input class="field" id="itemContact" maxlength="100" placeholder="راه ارتباطی دلخواه">
-
- <div class="form-buttons">
- <button class="primary" type="submit">ثبت مورد</button>
- <button class="secondary" type="button" onclick="closeModal()">انصراف</button>
- </div>
- </form>
- <p class="notice">اطلاعات این نسخه فعلاً فقط روی همین دستگاه ذخیره می‌شود.</p>
- `);
-}
-
-function addListing(event){
- event.preventDefault();
-
- const item={
- id:Date.now(),
- title:document.getElementById("itemTitle").value.trim(),
- category:document.getElementById("itemCategory").value,
- description:document.getElementById("itemDescription").value.trim(),
- location:document.getElementById("itemLocation").value.trim(),
- contact:document.getElementById("itemContact").value.trim(),
- date:new Date().toLocaleDateString("fa-IR")
- };
-
- if(!item.title||!item.description){
- toast("لطفاً اطلاعات ضروری را وارد کنید");
- return;
- }
-
- items.unshift(item);
- save();
- closeModal();
- currentView="all";
- currentCategory="";
- document.getElementById("listingTitle").textContent="آخرین موارد ثبت‌شده";
- renderListings();
- toast("مورد شما با موفقیت ثبت شد");
-}
-
-function renderListings(){
- const query=(document.getElementById("searchInput")?.value||"").trim().toLowerCase();
-
- let result=[...items];
-
- if(currentView==="category"){
- result=result.filter(x=>x.category===currentCategory);
- }
-
- if(currentView==="saved"){
- result=result.filter(x=>favorites.includes(x.id));
- }
-
- if(currentView==="my"){
- result=result.filter(x=>true);
- }
-
- if(query){
- result=result.filter(x=>
- (x.title+" "+x.description+" "+x.location+" "+(categories[x.category]||""))
- .toLowerCase().includes(query)
- );
- }
-
- const container=document.getElementById("listingResults");
- const count=document.getElementById("listingCount");
-
- if(!container)return;
-
- count.textContent=result.length+" مورد";
-
- if(result.length===0){
- container.innerHTML='<div class="empty">هنوز موردی برای نمایش وجود ندارد.</div>';
- return;
- }
-
- container.innerHTML=result.map(item=>`
- <div class="listing">
- <h4>${escapeHTML(item.title)}</h4>
- <p>${escapeHTML(item.description)}</p>
- <div class="meta">
- ${escapeHTML(categories[item.category]||"سایر")} 
- ${item.location?" | "+escapeHTML(item.location):""}
- | ${escapeHTML(item.date||"")}
- </div>
- <button onclick="toggleFavorite(${item.id})">
- ${favorites.includes(item.id)?"★ ذخیره‌شده":"☆ افزودن به علاقه‌مندی"}
- </button>
- <button onclick="showDetails(${item.id})">مشاهده جزئیات</button>
- <button onclick="deleteListing(${item.id})">حذف</button>
- </div>
- `).join("");
-}
-
-function escapeHTML(value){
- return String(value??"").replace(/[&<>"']/g,function(ch){
- return {
- "&":"&amp;",
- "<":"&lt;",
- ">":"&gt;",
- '"':"&quot;",
- "'":"&#39;"
- }[ch];
+function drawCategories(){
+ const box=document.getElementById("categories");
+ box.innerHTML="";
+ Object.entries(categories).forEach(([key,c])=>{
+  const b=document.createElement("button");
+  b.className="category"+(activeCategory===key?" active":"");
+  b.innerHTML=`<span class="emoji">${c.icon}</span><strong>${c.name}</strong>`;
+  b.onclick=()=>{
+   activeCategory=activeCategory===key?"all":key;
+   currentView="all";
+   document.getElementById("listHeading").textContent=activeCategory==="all"?"آخرین موارد":c.name;
+   drawCategories();render();
+  };
+  box.appendChild(b);
  });
 }
-
-function toggleFavorite(id){
- if(favorites.includes(id)){
- favorites=favorites.filter(x=>x!==id);
- toast("از علاقه‌مندی‌ها حذف شد");
- }else{
- favorites.push(id);
- toast("به علاقه‌مندی‌ها اضافه شد");
+function render(){
+ const q=document.getElementById("search").value.trim().toLowerCase();
+ let data=items.filter(item=>{
+  const text=[item.title,item.description,item.location,categories[item.category]?.name].join(" ").toLowerCase();
+  const match=text.includes(q);
+  const cat=activeCategory==="all"||item.category===activeCategory;
+  const mode=currentView==="saved"?saved.includes(item.id):currentView==="mine"?item.owner==="mine":true;
+  return match&&cat&&mode;
+ });
+ document.getElementById("total").textContent=data.length+" مورد";
+ const box=document.getElementById("results");
+ box.innerHTML="";
+ if(!data.length){
+  box.innerHTML='<div class="empty">موردی پیدا نشد. می‌توانی اولین مورد را ثبت کنی.</div>';
+  return;
  }
- save();
- renderListings();
+ data.forEach(item=>{
+  const card=document.createElement("article");
+  card.className="card";
+  card.innerHTML=`
+   <div class="cover">${categories[item.category]?.icon||"📌"}</div>
+   <div class="cardbody">
+    <h3></h3><p></p><div class="meta"></div>
+    <div class="actions">
+     <button class="view">جزئیات</button>
+     <button class="fav"></button>
+    </div>
+   </div>`;
+  card.querySelector("h3").textContent=item.title;
+  card.querySelector(".cardbody p").textContent=item.description;
+  card.querySelector(".meta").textContent=(categories[item.category]?.name||"")+" · "+(item.location||"بدون مکان");
+  card.querySelector(".view").onclick=()=>detail(item.id);
+  card.querySelector(".fav").textContent=saved.includes(item.id)?"♥ ذخیره‌شده":"♡ ذخیره";
+  card.querySelector(".fav").onclick=()=>toggleSaved(item.id);
+  if(item.owner==="mine"){
+   const del=document.createElement("button");
+   del.className="delete";
+   del.textContent="🗑 حذف";
+   del.onclick=()=>deleteItem(item.id);
+   card.querySelector(".actions").appendChild(del);
+  }
+  box.appendChild(card);
+ });
 }
-
-function deleteListing(id){
- if(!confirm("آیا از حذف این مورد مطمئن هستید؟"))return;
-
+function changeView(v,button){
+ currentView=v;activeCategory="all";
+ document.getElementById("listHeading").textContent=v==="saved"?"علاقه‌مندی‌ها":v==="mine"?"موارد من":"آخرین موارد";
+ document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
+ if(button)button.classList.add("active");
+ drawCategories();render();
+}
+function home(button){
+ currentView="all";activeCategory="all";
+ document.getElementById("listHeading").textContent="آخرین موارد";
+ document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+ button.classList.add("active");
+ document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
+ document.querySelector(".filters button").classList.add("active");
+ drawCategories();render();
+}
+function searchFocus(){
+ document.getElementById("search").focus();
+ document.getElementById("search").scrollIntoView({behavior:"smooth",block:"center"});
+}
+function toggleSaved(id){
+ saved=saved.includes(id)?saved.filter(x=>x!==id):[...saved,id];
+ saveData();render();
+}
+function openAdd(){
+ const select=document.getElementById("category");
+ select.innerHTML="";
+ Object.entries(categories).forEach(([key,c])=>{
+  const option=document.createElement("option");
+  option.value=key;option.textContent=c.name;select.appendChild(option);
+ });
+ document.getElementById("addModal").classList.add("show");
+}
+document.getElementById("addForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const item={
+  id:"user_"+Date.now(),
+  title:document.getElementById("title").value.trim(),
+  category:document.getElementById("category").value,
+  description:document.getElementById("description").value.trim(),
+  location:document.getElementById("location").value.trim(),
+  contact:document.getElementById("contact").value.trim(),
+  owner:"mine"
+ };
+ if(!item.title||!item.description)return;
+ items.unshift(item);saveData();
+ e.target.reset();closeModal("addModal");
+ changeView("mine",null);
+});
+function deleteItem(id){
+ const item=items.find(x=>x.id===id);
+ if(!item||item.owner!=="mine")return;
+ if(!confirm("آیا از حذف این مورد مطمئن هستی؟"))return;
  items=items.filter(x=>x.id!==id);
- favorites=favorites.filter(x=>x!==id);
- save();
- renderListings();
- toast("مورد حذف شد");
+ saved=saved.filter(x=>x!==id);
+ saveData();render();
 }
-
-function showDetails(id){
+function detail(id){
  const item=items.find(x=>x.id===id);
  if(!item)return;
-
- openModal("جزئیات مورد",`
- <h3>${escapeHTML(item.title)}</h3>
- <p>${escapeHTML(item.description)}</p>
- <p>دسته‌بندی: ${escapeHTML(categories[item.category]||"")}</p>
- <p>مکان: ${escapeHTML(item.location||"ثبت نشده")}</p>
- <p>راه ارتباطی: ${escapeHTML(item.contact||"ثبت نشده")}</p>
- <p class="notice">پیش از هر همکاری، اطلاعات و هویت طرف مقابل را بررسی کنید.</p>
- <button class="primary" onclick="closeModal()">بستن</button>
- `);
+ selectedId=id;
+ document.getElementById("detailTitle").textContent=item.title;
+ document.getElementById("detailCategory").textContent=categories[item.category]?.name||"";
+ document.getElementById("detailDescription").textContent=item.description;
+ document.getElementById("detailLocation").textContent="مکان: "+(item.location||"مشخص نشده");
+ document.getElementById("detailContact").textContent=item.contact?"راه ارتباطی: "+item.contact:"راه ارتباطی ثبت نشده است.";
+ document.getElementById("detailFavorite").textContent=saved.includes(id)?"حذف از علاقه‌مندی‌ها":"ذخیره ♥";
+ document.getElementById("detailFavorite").onclick=()=>{
+  toggleSaved(id);detail(id);
+ };
+ document.getElementById("detailModal").classList.add("show");
 }
+function profile(){
+ const mine=items.filter(x=>x.owner==="mine").length;
+ document.getElementById("stats").textContent="تعداد موارد ثبت‌شده: "+mine+" | علاقه‌مندی‌ها: "+saved.length;
+ document.getElementById("profileModal").classList.add("show");
+}
+function closeModal(id){document.getElementById(id).classList.remove("show")}
+document.querySelectorAll(".modal").forEach(m=>{
+ m.addEventListener("click",e=>{if(e.target===m)m.classList.remove("show")});
+});
+drawCategories();
+render();
 </script>
+</body>
+</html>
