@@ -10,7 +10,7 @@
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:#f8f6fc;color:#241936}
 header{background:linear-gradient(120deg,#39205e,#7540a0);color:white;padding:22px}
-nav{max-width:900px;margin:auto;display:flex;justify-content:space-between;align-items:center}
+nav{max-width:900px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px}
 .logo{font-size:27px;font-weight:bold;color:#f6c85c}
 select,button,input{font:inherit;border-radius:10px;padding:12px}
 select,input{border:1px solid #ddd;background:white}
@@ -30,58 +30,302 @@ footer{text-align:center;padding:25px;color:#81758c}
 </style>
 </head>
 <body>
+
 <header>
 <nav>
 <div class="logo">π PiLoop</div>
-<select onchange="changeLang(this.value)">
-<option value="en">English</option>
-<option value="fa">فارسی</option>
-<option value="ku">کوردی</option>
+<select id="language" onchange="changeLang(this.value)" aria-label="Language">
+<option value="en">🇬🇧 English</option>
+<option value="fa">🇮🇷 فارسی</option>
+<option value="ku">🌍 کوردی (سۆرانی)</option>
+<option value="ar">🇸🇦 العربية</option>
+<option value="tr">🇹🇷 Türkçe</option>
+<option value="de">🇩🇪 Deutsch</option>
+<option value="fr">🇫🇷 Français</option>
+<option value="es">🇪🇸 Español</option>
+<option value="zh">🇨🇳 中文</option>
+<option value="ja">🇯🇵 日本語</option>
+<option value="hi">🇮🇳 हिन्दी</option>
 </select>
 </nav>
 </header>
 
 <section class="hero">
-<h1 id="title">Connect. Trade. Grow.</h1>
-<p id="subtitle">A global community connecting people, businesses and services through the Pi ecosystem.</p>
-<input class="search" id="search" placeholder="Search products and services...">
+<h1 id="title"></h1>
+<p id="subtitle"></p>
+<input class="search" id="search" placeholder="">
 <br>
-<button class="btn" id="searchBtn" onclick="searchItems()">Explore PiLoop</button>
+<button class="btn" id="searchBtn" onclick="searchItems()"></button>
 </section>
 
 <section class="grid">
-<div class="card"><div class="emoji">🛠️</div><h3 data-en="Services" data-fa="خدمات" data-ku="خزمەتگوزاری">Services</h3><p data-en="Find trusted service providers." data-fa="ارائه‌دهندگان خدمات را پیدا کنید." data-ku="خزمەتگوزارەکان بدۆزەرەوە.">Find trusted service providers.</p></div>
-<div class="card"><div class="emoji">📦</div><h3 data-en="Products" data-fa="محصولات" data-ku="بەرهەمەکان">Products</h3><p data-en="Discover products from businesses." data-fa="محصولات کسب‌وکارها را کشف کنید." data-ku="بەرهەمەکانی بازرگانان ببینە.">Discover products from businesses.</p></div>
-<div class="card"><div class="emoji">💻</div><h3 data-en="Digital Work" data-fa="خدمات دیجیتال" data-ku="کاری دیجیتاڵ">Digital Work</h3><p data-en="Connect with digital professionals." data-fa="با متخصصان دیجیتال ارتباط بگیرید." data-ku="پەیوەندی بە پسپۆڕانی دیجیتاڵەوە بکە.">Connect with digital professionals.</p></div>
-<div class="card"><div class="emoji">🤝</div><h3 data-en="Community" data-fa="جامعه" data-ku="کۆمەڵگا">Community</h3><p data-en="Meet people around the world." data-fa="با افراد سراسر جهان آشنا شوید." data-ku="لەگەڵ خەڵکی جیهان ئاشنا ببە.">Meet people around the world.</p></div>
+<div class="card">
+<div class="emoji">🛠️</div>
+<h3 id="card0title"></h3>
+<p id="card0text"></p>
+</div>
+<div class="card">
+<div class="emoji">📦</div>
+<h3 id="card1title"></h3>
+<p id="card1text"></p>
+</div>
+<div class="card">
+<div class="emoji">💻</div>
+<h3 id="card2title"></h3>
+<p id="card2text"></p>
+</div>
+<div class="card">
+<div class="emoji">🤝</div>
+<h3 id="card3title"></h3>
+<p id="card3text"></p>
+</div>
 </section>
 
 <section class="action">
-<h2 id="requestTitle">Have a need? Create a request.</h2>
-<p id="requestText">Connect with people who can help you.</p>
-<button class="btn" onclick="alert('Coming soon!')">+ <span id="requestBtn">Create Request</span></button>
+<h2 id="requestTitle"></h2>
+<p id="requestText"></p>
+<button class="btn" onclick="comingSoon()">+ <span id="requestBtn"></span></button>
 </section>
-<footer>PiLoop © 2026 · Built for the Pi ecosystem</footer>
+
+<footer id="footer"></footer>
 
 <script>
-const translations={
-en:{title:"Connect. Trade. Grow.",subtitle:"A global community connecting people, businesses and services through the Pi ecosystem.",search:"Search products and services...",searchBtn:"Explore PiLoop",requestTitle:"Have a need? Create a request.",requestText:"Connect with people who can help you.",requestBtn:"Create Request"},
-fa:{title:"ارتباط بگیر، معامله کن، رشد کن",subtitle:"جامعه‌ای جهانی برای ارتباط مردم، کسب‌وکارها و خدمات در اکوسیستم Pi.",search:"جستجوی محصولات و خدمات...",searchBtn:"کاوش در PiLoop",requestTitle:"نیازی داری؟ درخواست ثبت کن.",requestText:"با کسانی که می‌توانند کمکت کنند ارتباط بگیر.",requestBtn:"ثبت درخواست"},
-ku:{title:"پەیوەندی بکە، مامەڵە بکە، گەشە بکە",subtitle:"کۆمەڵگایەکی جیهانی بۆ پەیوەندی نێوان خەڵک و بازرگانی و خزمەتگوزاری.",search:"گەڕان بۆ بەرهەم و خزمەتگوزاری...",searchBtn:"گەڕان لە PiLoop",requestTitle:"پێویستیت هەیە؟ داواکاری تۆمار بکە.",requestText:"پەیوەندی بەو کەسانەوە بکە کە یارمەتیت دەدەن.",requestBtn:"تۆمارکردنی داواکاری"}
+const translations = {
+en:{
+title:"Connect. Trade. Grow.",
+subtitle:"A global community connecting people, businesses and services through the Pi ecosystem.",
+search:"Search products and services...",
+searchBtn:"Explore PiLoop",
+cards:[
+["Services","Find trusted service providers."],
+["Products","Discover products from businesses."],
+["Digital Work","Connect with digital professionals."],
+["Community","Meet people around the world."]
+],
+requestTitle:"Have a need? Create a request.",
+requestText:"Connect with people who can help you.",
+requestBtn:"Create Request",
+footer:"PiLoop © 2026 · Built for the Pi ecosystem",
+empty:"Please enter a search term.",
+coming:"Coming soon!"
+},
+fa:{
+title:"ارتباط بگیر، معامله کن، رشد کن",
+subtitle:"جامعه‌ای جهانی برای ارتباط مردم، کسب‌وکارها و خدمات در اکوسیستم Pi.",
+search:"جستجوی محصولات و خدمات...",
+searchBtn:"کاوش در PiLoop",
+cards:[
+["خدمات","ارائه‌دهندگان خدمات را پیدا کنید."],
+["محصولات","محصولات کسب‌وکارها را کشف کنید."],
+["کار دیجیتال","با متخصصان دیجیتال ارتباط بگیرید."],
+["جامعه","با افراد سراسر جهان آشنا شوید."]
+],
+requestTitle:"نیازی داری؟ درخواست ثبت کن.",
+requestText:"با کسانی که می‌توانند کمکت کنند ارتباط بگیر.",
+requestBtn:"ثبت درخواست",
+footer:"PiLoop © 2026 · ساخته‌شده برای اکوسیستم Pi",
+empty:"لطفاً عبارت موردنظر را وارد کنید.",
+coming:"به‌زودی!"
+},
+ku:{
+title:"پەیوەندی بکە، مامەڵە بکە، گەشە بکە",
+subtitle:"کۆمەڵگایەکی جیهانی بۆ پەیوەندی نێوان خەڵک و بازرگانی و خزمەتگوزاری.",
+search:"گەڕان بۆ بەرهەم و خزمەتگوزاری...",
+searchBtn:"گەڕان لە PiLoop",
+cards:[
+["خزمەتگوزاری","خزمەتگوزارەکان بدۆزەرەوە."],
+["بەرهەمەکان","بەرهەمەکانی بازرگانان ببینە."],
+["کاری دیجیتاڵ","پەیوەندی بە پسپۆڕانی دیجیتاڵەوە بکە."],
+["کۆمەڵگا","لەگەڵ خەڵکی جیهان ئاشنا ببە."]
+],
+requestTitle:"پێویستیت هەیە؟ داواکاری تۆمار بکە.",
+requestText:"پەیوەندی بەو کەسانەوە بکە کە یارمەتیت دەدەن.",
+requestBtn:"تۆمارکردنی داواکاری",
+footer:"PiLoop © 2026 · بۆ ژینگەی Pi دروستکراوە",
+empty:"تکایە وشەیەک بنووسە.",
+coming:"بەم زووانە!"
+},
+ar:{
+title:"تواصل. تداول. انطلق.",
+subtitle:"مجتمع عالمي يربط الأشخاص والشركات والخدمات من خلال منظومة Pi.",
+search:"ابحث عن المنتجات والخدمات...",
+searchBtn:"استكشف PiLoop",
+cards:[
+["الخدمات","اعثر على مقدمي الخدمات الموثوقين."],
+["المنتجات","اكتشف منتجات الشركات."],
+["العمل الرقمي","تواصل مع المتخصصين الرقميين."],
+["المجتمع","تعرّف على أشخاص من جميع أنحاء العالم."]
+],
+requestTitle:"هل تحتاج إلى شيء؟ أنشئ طلباً.",
+requestText:"تواصل مع الأشخاص الذين يمكنهم مساعدتك.",
+requestBtn:"إنشاء طلب",
+footer:"PiLoop © 2026 · مبني لمنظومة Pi",
+empty:"يرجى إدخال كلمة للبحث.",
+coming:"قريباً!"
+},
+tr:{
+title:"Bağlan. Ticaret Yap. Geliş.",
+subtitle:"Pi ekosistemi aracılığıyla insanları, işletmeleri ve hizmetleri buluşturan küresel topluluk.",
+search:"Ürün ve hizmet ara...",
+searchBtn:"PiLoop'u Keşfet",
+cards:[
+["Hizmetler","Güvenilir hizmet sağlayıcıları bulun."],
+["Ürünler","İşletmelerin ürünlerini keşfedin."],
+["Dijital İş","Dijital uzmanlarla bağlantı kurun."],
+["Topluluk","Dünyanın dört bir yanından insanlarla tanışın."]
+],
+requestTitle:"Bir ihtiyacınız mı var? Talep oluşturun.",
+requestText:"Size yardımcı olabilecek kişilerle bağlantı kurun.",
+requestBtn:"Talep Oluştur",
+footer:"PiLoop © 2026 · Pi ekosistemi için geliştirildi",
+empty:"Lütfen bir arama terimi girin.",
+coming:"Çok yakında!"
+},
+de:{
+title:"Verbinden. Handeln. Wachsen.",
+subtitle:"Eine globale Gemeinschaft, die Menschen, Unternehmen und Dienstleistungen im Pi-Ökosystem verbindet.",
+search:"Produkte und Dienstleistungen suchen...",
+searchBtn:"PiLoop entdecken",
+cards:[
+["Dienstleistungen","Finden Sie vertrauenswürdige Anbieter."],
+["Produkte","Entdecken Sie Produkte von Unternehmen."],
+["Digitale Arbeit","Vernetzen Sie sich mit digitalen Fachleuten."],
+["Gemeinschaft","Lernen Sie Menschen aus aller Welt kennen."]
+],
+requestTitle:"Sie benötigen etwas? Erstellen Sie eine Anfrage.",
+requestText:"Verbinden Sie sich mit Menschen, die Ihnen helfen können.",
+requestBtn:"Anfrage erstellen",
+footer:"PiLoop © 2026 · Entwickelt für das Pi-Ökosystem",
+empty:"Bitte geben Sie einen Suchbegriff ein.",
+coming:"Demnächst verfügbar!"
+},
+fr:{
+title:"Connectez. Échangez. Progressez.",
+subtitle:"Une communauté mondiale reliant les personnes, les entreprises et les services grâce à l'écosystème Pi.",
+search:"Rechercher des produits et services...",
+searchBtn:"Explorer PiLoop",
+cards:[
+["Services","Trouvez des prestataires de confiance."],
+["Produits","Découvrez les produits des entreprises."],
+["Travail numérique","Connectez-vous avec des professionnels du numérique."],
+["Communauté","Rencontrez des personnes du monde entier."]
+],
+requestTitle:"Un besoin ? Créez une demande.",
+requestText:"Connectez-vous avec des personnes qui peuvent vous aider.",
+requestBtn:"Créer une demande",
+footer:"PiLoop © 2026 · Conçu pour l'écosystème Pi",
+empty:"Veuillez saisir un terme de recherche.",
+coming:"Bientôt disponible !"
+},
+es:{
+title:"Conecta. Intercambia. Crece.",
+subtitle:"Una comunidad global que conecta personas, empresas y servicios a través del ecosistema Pi.",
+search:"Buscar productos y servicios...",
+searchBtn:"Explorar PiLoop",
+cards:[
+["Servicios","Encuentra proveedores de servicios confiables."],
+["Productos","Descubre productos de empresas."],
+["Trabajo digital","Conecta con profesionales digitales."],
+["Comunidad","Conoce personas de todo el mundo."]
+],
+requestTitle:"¿Necesitas algo? Crea una solicitud.",
+requestText:"Conecta con personas que pueden ayudarte.",
+requestBtn:"Crear solicitud",
+footer:"PiLoop © 2026 · Creado para el ecosistema Pi",
+empty:"Por favor, introduce un término de búsqueda.",
+coming:"¡Próximamente!"
+},
+zh:{
+title:"连接 · 交易 · 成长",
+subtitle:"通过 Pi 生态系统连接全球用户、企业和服务的社区。",
+search:"搜索产品和服务...",
+searchBtn:"探索 PiLoop",
+cards:[
+["服务","寻找值得信赖的服务提供商。"],
+["产品","发现企业提供的产品。"],
+["数字工作","与数字领域专业人士建立联系。"],
+["社区","认识来自世界各地的人们。"]
+],
+requestTitle:"有需求？创建一个请求。",
+requestText:"与能够帮助您的人建立联系。",
+requestBtn:"创建请求",
+footer:"PiLoop © 2026 · 为 Pi 生态系统打造",
+empty:"请输入搜索内容。",
+coming:"即将推出！"
+},
+ja:{
+title:"つながる。取引する。成長する。",
+subtitle:"Piエコシステムを通じて人々、企業、サービスをつなぐグローバルコミュニティ。",
+search:"商品やサービスを検索...",
+searchBtn:"PiLoopを探索",
+cards:[
+["サービス","信頼できるサービス提供者を見つけましょう。"],
+["商品","企業の商品を発見しましょう。"],
+["デジタルワーク","デジタル分野の専門家とつながりましょう。"],
+["コミュニティ","世界中の人々と出会いましょう。"]
+],
+requestTitle:"お困りですか？リクエストを作成しましょう。",
+requestText:"あなたを助けてくれる人とつながりましょう。",
+requestBtn:"リクエストを作成",
+footer:"PiLoop © 2026 · Piエコシステムのために開発",
+empty:"検索語を入力してください。",
+coming:"近日公開！"
+},
+hi:{
+title:"जुड़ें। व्यापार करें। आगे बढ़ें।",
+subtitle:"Pi इकोसिस्टम के माध्यम से लोगों, व्यवसायों और सेवाओं को जोड़ने वाला वैश्विक समुदाय।",
+search:"उत्पाद और सेवाएँ खोजें...",
+searchBtn:"PiLoop देखें",
+cards:[
+["सेवाएँ","विश्वसनीय सेवा प्रदाताओं को खोजें।"],
+["उत्पाद","व्यवसायों के उत्पाद खोजें।"],
+["डिजिटल कार्य","डिजिटल विशेषज्ञों से जुड़ें।"],
+["समुदाय","दुनिया भर के लोगों से मिलें।"]
+],
+requestTitle:"क्या आपको कुछ चाहिए? अनुरोध बनाएँ।",
+requestText:"उन लोगों से जुड़ें जो आपकी मदद कर सकते हैं।",
+requestBtn:"अनुरोध बनाएँ",
+footer:"PiLoop © 2026 · Pi इकोसिस्टम के लिए बनाया गया",
+empty:"कृपया खोज शब्द दर्ज करें।",
+coming:"जल्द आ रहा है!"
+}
 };
+
 function changeLang(lang){
 const t=translations[lang];
-for(const id of ["title","subtitle","searchBtn","requestTitle","requestText","requestBtn"])
-document.getElementById(id).textContent=t[id];
-document.getElementById("search").placeholder=t.search;
+if(!t)return;
+
 document.documentElement.lang=lang;
-document.documentElement.dir=lang==="en"?"ltr":"rtl";
-document.querySelectorAll("[data-"+lang+"]").forEach(el=>el.textContent=el.getAttribute("data-"+lang));
+document.documentElement.dir=
+["fa","ku","ar"].includes(lang)?"rtl":"ltr";
+
+document.getElementById("title").textContent=t.title;
+document.getElementById("subtitle").textContent=t.subtitle;
+document.getElementById("search").placeholder=t.search;
+document.getElementById("searchBtn").textContent=t.searchBtn;
+document.getElementById("requestTitle").textContent=t.requestTitle;
+document.getElementById("requestText").textContent=t.requestText;
+document.getElementById("requestBtn").textContent=t.requestBtn;
+document.getElementById("footer").textContent=t.footer;
+
+t.cards.forEach((card,i)=>{
+document.getElementById("card"+i+"title").textContent=card[0];
+document.getElementById("card"+i+"text").textContent=card[1];
+});
 }
+
 function searchItems(){
 const q=document.getElementById("search").value.trim();
-alert(q?"Search will be connected in a future version.":"Please enter a search term.");
+const t=translations[document.getElementById("language").value];
+alert(q?"Search will be connected in a future version.":t.empty);
 }
+
+function comingSoon(){
+const lang=document.getElementById("language").value;
+alert(translations[lang].coming);
+}
+
+changeLang("en");
 </script>
 </body>
 </html>
