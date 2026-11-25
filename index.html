@@ -169,7 +169,8 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
   <h2 id="profileHeading"></h2>
   <p id="profileWelcome"></p>
   <div id="stats"></div>
-  <p class="small" id="piNotice"></p>
+  <p class="small" id="piNotice" role="status"></p>
+  <button type="button" id="piLoginButton" class="primary" style="width:100%;padding:12px;border:0;border-radius:10px" onclick="loginWithPi()"></button>
   <div class="dialogbuttons">
    <button class="cancel" id="closeProfile" onclick="closeModal('profileModal')"></button>
   </div>
@@ -281,7 +282,7 @@ function applyLanguage(){
  document.getElementById("closeDetail").textContent=d.close;
  document.getElementById("profileHeading").textContent=d.profile;
  document.getElementById("profileWelcome").textContent=d.profileWelcome;
- document.getElementById("piNotice").textContent=d.piNotice;
+ updatePiProfile();
  document.getElementById("closeProfile").textContent=d.close;
  buildCategorySelect();
  drawCategories();
@@ -446,6 +447,7 @@ function detail(id){
  document.getElementById("detailModal").classList.add("show");
 }
 function profile(){
+ updatePiProfile();
  const mine=getItems().filter(x=>x.owner==="mine").length;
  document.getElementById("stats").textContent=t().registered+": "+mine+" | "+t().favorites+": "+getSaved().length;
  document.getElementById("profileModal").classList.add("show");
@@ -454,7 +456,38 @@ function closeModal(id){document.getElementById(id).classList.remove("show")}
 document.querySelectorAll(".modal").forEach(m=>{
  m.addEventListener("click",e=>{if(e.target===m)m.classList.remove("show")});
 });
+let piUser = null;
+let piBusy = false;
+let piReady = false;
+const piLabels = {fa:"ورود با Pi Network",en:"Sign in with Pi Network",ku:"چوونەژوورەوە بە Pi",ar:"تسجيل الدخول عبر Pi",tr:"Pi ile giriş yap",de:"Mit Pi anmelden",fr:"Connexion avec Pi",es:"Iniciar sesión con Pi",zh:"使用 Pi 登录",ja:"Piでログイン",hi:"Pi से लॉग इन करें"};
+function updatePiProfile(){
+ const button = document.getElementById("piLoginButton");
+ button.textContent = piUser ? (lang === "fa" ? "خروج از نشست محلی" : "End local session") : piLabels[lang] || piLabels.en;
+ button.disabled = piBusy;
+ document.getElementById("profileButton").textContent = piUser ? "👤 @" + piUser.username : "👤 " + t().profile;
+ document.getElementById("piNotice").textContent = piUser ? "@" + piUser.username + (lang === "fa" ? " — ورود آزمایشی؛ حساب آنلاین هنوز فعال نیست." : " — Test login; online account not enabled.") : (lang === "fa" ? "ورود آزمایشی با حساب پای (Testnet)" : "Pi Testnet sign-in");
+}
+async function loginWithPi(){
+ if(piBusy)return;
+ if(piUser){piUser=null;updatePiProfile();return;}
+ const notice=document.getElementById("piNotice");
+ if(!piReady){notice.textContent=lang==="fa"?"Pi SDK آماده نیست. صفحه را در Pi Browser دوباره بارگذاری کنید.":"Pi SDK not ready. Reload in Pi Browser.";return;}
+ piBusy=true;updatePiProfile();
+ notice.textContent=lang==="fa"?"در حال اتصال...":"Connecting...";
+ try{
+  const auth=await window.Pi.authenticate(["username"],function(payment){console.warn("Incomplete payment requires server reconciliation.");});
+  if(!auth || !auth.user || !auth.user.username)throw new Error("Missing Pi username");
+  piUser={username:auth.user.username};
+  updatePiProfile();
+ }catch(error){notice.textContent=(lang==="fa"?"خطای ورود: ":"Login error: ")+(error.message||String(error));}
+ finally{piBusy=false;document.getElementById("piLoginButton").disabled=false;}
+}
+const piSDK=document.createElement("script");
+piSDK.src="https://sdk.minepi.com/pi-sdk.js";
+piSDK.onload=function(){try{window.Pi.init({version:"2.0",sandbox:true});piReady=true;}catch(error){document.getElementById("piNotice").textContent="Pi SDK: "+error.message;}};
+piSDK.onerror=function(){document.getElementById("piNotice").textContent="Pi SDK connection failed.";};
 applyLanguage();
+document.head.appendChild(piSDK);
 </script>
 </body>
 </html>
